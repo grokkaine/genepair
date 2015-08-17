@@ -1,6 +1,8 @@
 # genepair
 Measuring gene co-expression by means of mutual information
 
+Read the notes.txt for usage instructions.
+
 TODO:
 Acknowledge Carrera et al.
 
