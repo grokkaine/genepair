@@ -1,10 +1,10 @@
+#include "./genepair_f.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 #include <string.h>
 
-#include "genepair_f.h"
 
 int main(int argc, char *argv[]){
 
@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
   if (ntype == 1){//compute MIs
     char *nmicrf = argv[2];
     char *nmif = argv[3];
-    int ngenes = atoi(argv[4]);
+    size_t ngenes = atoi(argv[4]);
     int nexp = atoi(argv[5]);
     int gene1 = atoi(argv[6]);
     int gene2 = atoi(argv[7]);
@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
 
   if (ntype == 2){//compute clr
     char *nvalf = argv[2];
-    int ngenes = atoi(argv[3]);
+    size_t ngenes = atoi(argv[3]);
     char* nclrf = argv[4];
     int inputftype = atoi(argv[5]);
     computeCLR(nvalf,ngenes,nclrf,inputftype);
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]){
 	if (ntype == 3){//compute MI line
 		char *nmilinef = argv[2];
 		char *nmif = argv[3];
-    int ngenes = atoi(argv[4]);
+    size_t ngenes = atoi(argv[4]);
     int nexp = atoi(argv[5]);
     int numbins = atoi(argv[6]);
     int splineord = atoi(argv[7]);
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]){
   if (ntype == 4){//compute MIs in paralel
     char *nmicrf = argv[2];
     char *nmif = argv[3];
-    int ngenes = atoi(argv[4]);
+    size_t ngenes = atoi(argv[4]);
     int nexp = atoi(argv[5]);
     int numbins = atoi(argv[6]);
     int splineord = atoi(argv[7]);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]){
   if (ntype == 6){//compute MIs
     char *nmicrf = argv[2];
     char *nmif = argv[3];
-    int ngenes = atoi(argv[4]);
+    size_t ngenes = atoi(argv[4]);
     int nexp = atoi(argv[5]);
     int gene1 = atoi(argv[6]);
     int gene2 = atoi(argv[7]);

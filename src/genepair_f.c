@@ -1,8 +1,10 @@
+#include "./genepair_f.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 #include <string.h>
+
 
 #define UNDEF 1e+30
 
@@ -411,7 +413,7 @@ void snPrintArrayInt(const char *fn, const int *x, int size)
     fclose(f);
 }
 
-double* readMicroarray(const char *nmicrf, int ngenes, int nexp){
+double* readMicroarray(const char *nmicrf, size_t ngenes, int nexp){
     printf("Alocating the microarray\n");
     double *X = (double*) calloc(ngenes*nexp,sizeof(double));
     FILE *mif;
@@ -431,7 +433,7 @@ double* readMicroarray(const char *nmicrf, int ngenes, int nexp){
     return X;
 }
 
-float getMIpair(const double* X, int ngenes, int nexp, int row, int col, int numbins, int splineord){
+float getMIpair(const double* X, size_t ngenes, int nexp, int row, int col, int numbins, int splineord){
     int *knots = calloc(numbins + splineord, sizeof(int));
     SplineKnots(knots, numbins, splineord);
     /* allocate room for marginal weights one weight for each bin in each each condition point*/
@@ -456,7 +458,7 @@ float getMIpair(const double* X, int ngenes, int nexp, int row, int col, int num
     return mi;
 }
 
-float* getMIline(const char* nmilinef, const char* nmif, int ngenes, int nexp, int numbins, int splineord, int linei){
+float* getMIline(const char* nmilinef, const char* nmif, size_t ngenes, int nexp, int numbins, int splineord, int linei){
     int i;
 	double *X = readMicroarray(nmif,ngenes,nexp);
     float *row = (float*) calloc(ngenes, sizeof(float));
@@ -474,7 +476,7 @@ float* getMIline(const char* nmilinef, const char* nmif, int ngenes, int nexp, i
     return row;
 }
 
-// float getCLRpair(const double* X, int ngenes, int nexp, int g1, int g2, int numbins, int splineord){
+// float getCLRpair(const double* X, size_t ngenes, int nexp, int g1, int g2, int numbins, int splineord){
     // float *mi1, *mi2;
     // float m1, m2, s1, s2;
     // float z, zg1, zg2;
@@ -495,7 +497,7 @@ float* getMIline(const char* nmilinef, const char* nmif, int ngenes, int nexp, i
 /*
 computes the MI scores for a list of gene pairs
 */
-void getMIfile(const double* X, int ngenes, int nexp, int numbins, int splineord){
+void getMIfile(const double* X, size_t ngenes, int nexp, int numbins, int splineord){
     int i;
     int nlines = 36;
     FILE *fi, *fo;
@@ -510,7 +512,7 @@ void getMIfile(const double* X, int ngenes, int nexp, int numbins, int splineord
     fclose(fi); fclose(fo);
 }
 
-void loadTorgeirUpperMatrix(float* v, int ngenes, const char *nvalf){
+void loadTorgeirUpperMatrix(float* v, size_t ngenes, const char *nvalf){
     int i,j;
     FILE *fi;
     fi = fopen(nvalf,"r");
@@ -547,7 +549,7 @@ void loadTorgeirUpperMatrix(float* v, int ngenes, const char *nvalf){
     printf("Done reading correlations\n");
 }
 
-void loadLowerMatrix(float* v, int ngenes, const char *nvalf){
+void loadLowerMatrix(float* v, size_t ngenes, const char *nvalf){
     int i,j;
     FILE *fi;
     fi = fopen(nvalf,"r");
@@ -558,7 +560,7 @@ void loadLowerMatrix(float* v, int ngenes, const char *nvalf){
     printf("Done reading correlations\n");
 }
 
-void computeCLR(const char *nvalf, int ngenes, const char *nclrf, int inputftype){
+void computeCLR(const char *nvalf, size_t ngenes, const char *nclrf, int inputftype){
     int i,j;
     float *v = (float*) calloc(ngenes*(ngenes-1)/2,sizeof(float));
     if (inputftype == 0) loadTorgeirUpperMatrix(v, ngenes, nvalf);
@@ -607,7 +609,7 @@ Estimating mutual information using B-spline functions – an
 improved similarity measure for analysing gene expression data
 Carsten O Daub*1,4, Ralf Steuer2, Joachim Selbig1 and Sebastian Kloska1,3
 */
-void computeMI(int ngenes, int nexp, int numbins, int splineord, int fromRow, int toRow, const char* nmif, const char* nmicrf){
+void computeMI(size_t ngenes, int nexp, int numbins, int splineord, int fromRow, int toRow, const char* nmif, const char* nmicrf){
     int i, j;
     FILE *fo, *ft;
     char ftn[100];
@@ -662,7 +664,7 @@ void computeMI(int ngenes, int nexp, int numbins, int splineord, int fromRow, in
 /*
 variation of computeMI where the one-dimensional entropies are computed only for the commonly defined samples
 */
-void computeMIundef(int ngenes, int nexp, int numbins, int splineord, int fromRow, int toRow, const char* nmif, const char* nmicrf){
+void computeMIundef(size_t ngenes, int nexp, int numbins, int splineord, int fromRow, int toRow, const char* nmif, const char* nmicrf){
     int i, j;
     FILE *fo;
     //FILE *ft;
@@ -708,7 +710,7 @@ void computeMIundef(int ngenes, int nexp, int numbins, int splineord, int fromRo
     free(X);
 }
 
-void computeMIparalel(int ngenes, int nexp, int numbins, int splineord, const char* nmif, const char* nmicrf, int fromRow, int toRow, int fromCol, int toCol){
+void computeMIparalel(size_t ngenes, int nexp, int numbins, int splineord, const char* nmif, const char* nmicrf, int fromRow, int toRow, int fromCol, int toCol){
     int i, j;
     FILE *fo, *ft;
     //char ftn[100];
